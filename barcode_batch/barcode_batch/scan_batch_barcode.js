@@ -26,14 +26,14 @@ barcode_batch.Controller = frappe.ui.form.Controller.extend({
 				let cur_grid = this.frm.fields_dict.items.grid;
 
 				let row_to_modify = null;
-				const existing_item_row = this.frm.doc.items.find(d => d.item_code === data.item_code);
+				const existing_item_row = this.frm.doc.items.find(d => d.item_code === data.item_code && d.batch_no === data.batch_no);
 				const blank_item_row = this.frm.doc.items.find(d => !d.item_code);
 
 				if (existing_item_row) {
 					row_to_modify = existing_item_row;
 				} else if (blank_item_row) {
 					row_to_modify = blank_item_row;
-				}
+                }
 
 				if (!row_to_modify) {
 					// add new row
@@ -44,9 +44,11 @@ barcode_batch.Controller = frappe.ui.form.Controller.extend({
 
 				this.frm.from_barcode = true;
 				frappe.model.set_value(row_to_modify.doctype, row_to_modify.name, {
+                    batch_no: data.batch_no,
 					item_code: data.item_code,
 					qty: (row_to_modify.qty || 0) + 1
-				});
+                });
+
 
 				['serial_no', 'batch_no', 'barcode'].forEach(field => {
 					if (data[field] && frappe.meta.has_field(row_to_modify.doctype, field)) {
@@ -61,5 +63,38 @@ barcode_batch.Controller = frappe.ui.form.Controller.extend({
 		return false;
 	},
 });
+
+erpnext.stock.select_batch_and_serial_no = (frm, item) => {
+	let get_warehouse_type_and_name = (item) => {
+		let value = '';
+		if(frm.fields_dict.from_warehouse.disp_status === "Write") {
+			value = cstr(item.s_warehouse) || '';
+			return {
+				type: 'Source Warehouse',
+				name: value
+			};
+		} else {
+			value = cstr(item.t_warehouse) || '';
+			return {
+				type: 'Target Warehouse',
+				name: value
+			};
+		}
+	}
+
+	if(item && item.has_serial_no
+		&& frm.doc.purpose === 'Material Receipt') {
+		return;
+	}
+
+	frappe.require("assets/erpnext/js/utils/serial_no_batch_selector.js", function() {
+		new erpnext.SerialNoBatchSelector({
+			frm: frm,
+			item: item,
+			warehouse_details: get_warehouse_type_and_name(item),
+		});
+	});
+
+}
 
 $.extend(cur_frm.cscript, new barcode_batch.Controller({frm: cur_frm}));
