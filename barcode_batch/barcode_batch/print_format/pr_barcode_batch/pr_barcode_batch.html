@@ -1,0 +1,26 @@
+{%- for row in doc.items -%}
+{%- for qty in range(row.qty) -%}
+<div style="height=50px;">
+{{ row. item_code }}
+{{ row.item_name }} 
+{{ row.get_formatted("amount") }}
+<br><br>
+<svg class="barcode"
+				jsbarcode-margin="0"
+				jsbarcode-margintop="0"
+				jsbarcode-marginbottom="1"
+				jsbarcode-height="25"
+				jsbarcode-width="1"
+				jsbarcode-fontsize="12"
+				jsbarcode-flat="true"
+				jsbarcode-value="{{ row.batch_no}}"/></br>
+<br><br>
+<br><br>
+</div>
+{%- endfor -%}
+{%- endfor -%}
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.9.0/dist/JsBarcode.all.min.js"></script>
+<script>
+JsBarcode(".barcode").init();
+</script>
