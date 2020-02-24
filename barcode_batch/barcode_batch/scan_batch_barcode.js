@@ -1,25 +1,25 @@
 frappe.provide("barcode_batch");
 
 barcode_batch.Controller = frappe.ui.form.Controller.extend({
-	scan_batch_barcode: function() {
-		let scan_batch_barcode_field = this.frm.fields_dict["scan_batch_barcode"];
+	scan_barcode: function() {
+		let scan_barcode_field = this.frm.fields_dict["scan_barcode"];
 
 		let show_description = function(idx, exist = null) {
 			if (exist) {
-				scan_batch_barcode_field.set_new_description(__('Row #{0}: Qty increased by 1', [idx]));
+				scan_barcode_field.set_new_description(__('Row #{0}: Qty increased by 1', [idx]));
 			} else {
-				scan_batch_barcode_field.set_new_description(__('Row #{0}: Item added', [idx]));
+				scan_barcode_field.set_new_description(__('Row #{0}: Item added', [idx]));
 			}
 		}
 
-		if(this.frm.doc.scan_batch_barcode) {
+		if(this.frm.doc.scan_barcode) {
 			frappe.call({
 				method: "erpnext.selling.page.point_of_sale.point_of_sale.search_serial_or_batch_or_barcode_number",
-				args: { search_value: this.frm.doc.scan_batch_barcode }
+				args: { search_value: this.frm.doc.scan_barcode }
 			}).then(r => {
 				const data = r && r.message;
 				if (!data || Object.keys(data).length === 0) {
-					scan_batch_barcode_field.set_new_description(__('Cannot find Item with this barcode'));
+					scan_barcode_field.set_new_description(__('Cannot find Item with this barcode'));
 					return;
 				}
 
@@ -56,7 +56,7 @@ barcode_batch.Controller = frappe.ui.form.Controller.extend({
 					}
 				});
 
-				scan_batch_barcode_field.set_value('');
+				scan_barcode_field.set_value('');
 			});
 		}
 		return false;
