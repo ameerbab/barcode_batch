@@ -26,7 +26,7 @@ barcode_batch.Controller = frappe.ui.form.Controller.extend({
 				let cur_grid = this.frm.fields_dict.items.grid;
 
 				let row_to_modify = null;
-				const existing_item_row = this.frm.doc.items.find(d => d.item_code === data.item_code && d.batch_no === data.batch_no);
+				const existing_item_row = this.frm.doc.items.find(d => d.item_code === data.item_code && (d.batch_no === data.batch_no || !data.batch_no));
 				const blank_item_row = this.frm.doc.items.find(d => !d.item_code);
 
 				if (existing_item_row) {
@@ -48,7 +48,6 @@ barcode_batch.Controller = frappe.ui.form.Controller.extend({
 					item_code: data.item_code,
 					qty: (row_to_modify.qty || 0) + 1
                 });
-
 
 				['serial_no', 'batch_no', 'barcode'].forEach(field => {
 					if (data[field] && frappe.meta.has_field(row_to_modify.doctype, field)) {
@@ -85,16 +84,17 @@ erpnext.stock.select_batch_and_serial_no = (frm, item) => {
 	if(item && item.has_serial_no
 		&& frm.doc.purpose === 'Material Receipt') {
 		return;
-	}
+    }
 
-	frappe.require("assets/erpnext/js/utils/serial_no_batch_selector.js", function() {
-		new erpnext.SerialNoBatchSelector({
-			frm: frm,
-			item: item,
-			warehouse_details: get_warehouse_type_and_name(item),
-		});
-	});
-
+    if(!item.batch_no){
+        frappe.require("assets/erpnext/js/utils/serial_no_batch_selector.js", function() {
+            new erpnext.SerialNoBatchSelector({
+                frm: frm,
+                item: item,
+                warehouse_details: get_warehouse_type_and_name(item),
+            });
+        });
+    }
 }
 
 $.extend(cur_frm.cscript, new barcode_batch.Controller({frm: cur_frm}));
