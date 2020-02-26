@@ -38,6 +38,7 @@ barcode_batch.Controller = frappe.ui.form.Controller.extend({
 				if (!row_to_modify) {
 					// add new row
 					row_to_modify = frappe.model.add_child(this.frm.doc, cur_grid.doctype, 'items');
+					this.frm.refresh_field('items');
 				}
 
 				show_description(row_to_modify.idx, row_to_modify.item_code);
