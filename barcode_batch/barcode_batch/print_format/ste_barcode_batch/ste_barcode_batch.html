@@ -6,9 +6,9 @@
 {%- if row.t_warehouse -%}
 {%- for qty in range(row.qty) -%}
 <div style="height=50px;">
-{{ row. item_code }}
+{{ row.item_code }}
 {{ row.item_name }} 
-{{ row.get_formatted("amount") }}
+{{ row.get_formatted("basic_rate") }}
 <br><br>
 <svg class="barcode"
 				jsbarcode-margin="0"
