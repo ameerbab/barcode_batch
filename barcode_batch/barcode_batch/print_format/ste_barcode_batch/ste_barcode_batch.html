@@ -7,9 +7,7 @@
 {%- for qty in range(row.qty) -%}
 <div style="height=50px;">
 {{ row.item_code }}
-{{ row.item_name }} 
-{{ row.get_formatted("basic_rate") }}
-<br><br>
+<br>
 <svg class="barcode"
 				jsbarcode-margin="0"
 				jsbarcode-margintop="0"
