@@ -120,9 +120,9 @@ doctype_js = {
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "barcode_batch.event.get_events"
-# }
+override_whitelisted_methods = {
+	"erpnext.selling.page.point_of_sale.point_of_sale.search_serial_or_batch_or_barcode_number": "barcode_batch.api.search_serial_or_batch_or_barcode_number"
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
