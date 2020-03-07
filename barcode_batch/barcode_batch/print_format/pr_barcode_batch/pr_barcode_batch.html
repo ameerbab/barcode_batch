@@ -3,8 +3,8 @@
 </div>
 {%- for row in doc.items -%}
 {%- for qty in range(row.qty) -%}
-<div style="height=50px;">
-{{ row. item_code }}
+<div style="height=50px; width:200px; text-align:center">
+{{ row.item_code }}
 <br>
 <svg class="barcode"
 				jsbarcode-margin="0"
@@ -15,7 +15,6 @@
 				jsbarcode-fontsize="12"
 				jsbarcode-flat="true"
 				jsbarcode-value="{{ row.batch_no or row.item_code}}{{ "|" + row.quality_inspection if row.quality_inspection }}"/></br>
-<br><br>
 <br><br>
 </div>
 {%- endfor -%}
