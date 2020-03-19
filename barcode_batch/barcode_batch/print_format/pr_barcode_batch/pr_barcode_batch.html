@@ -2,7 +2,7 @@
 	<h2>Purchase Receipt<br><small>{{ doc.name }}</small></h2>
 </div>
 {%- for row in doc.items -%}
-{%- for qty in range(row.qty) -%}
+{%- for qty in range(row.qty|int) -%}
 <div style="height=50px; width:200px; text-align:center">
 {{ row.item_code }}
 <br>

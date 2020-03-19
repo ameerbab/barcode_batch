@@ -4,7 +4,7 @@
 </div>
 {%- for row in doc.items -%}
 {%- if row.t_warehouse -%}
-{%- for qty in range(row.qty) -%}
+{%- for qty in range(row.qty|int) -%}
 <div style="height=50px; width:200px; text-align:center">
 {{ row.item_code }}
 <br>
