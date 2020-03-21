@@ -1,9 +1,7 @@
-<div class="print-heading">
-	<h2>Purchase Receipt<br><small>{{ doc.name }}</small></h2>
-</div>
 {%- for row in doc.items -%}
 {%- for qty in range(row.qty|int) -%}
-<div style="height=50px; width:200px; text-align:center">
+<div style="height=1in; width:2in; text-align:center">
+<br>
 {{ row.item_code }}
 <br>
 <svg class="barcode"
@@ -24,3 +22,13 @@
 <script>
 JsBarcode(".barcode").init();
 </script>
+
+<style>
+	@media screen {
+		.print-format {
+			width: 2in;
+			padding: 0;
+			min-height: 1in;
+		}
+	}
+</style>
